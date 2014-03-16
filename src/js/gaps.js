@@ -42,7 +42,39 @@ var GAPS = {
 			} else if ( a.order > b.order ) {
 				return 1;
 			} else {
-				return 0;
+				if ( !a.topside && b.topside ) {
+					return -1;
+				} else if ( a.topside && !b.topside ) {
+					return 1;
+				} else if ( a.topside && b.topside ) {
+					if ( a.start < b.start ) {
+						return -1;
+					} else if ( a.start > b.start ) {
+						return 1;
+					} else {
+						if ( a.end > b.end ) {
+							return -1;
+						} else if ( a.end < b.end ) {
+							return 1;
+						} else {
+							return 0;
+						}
+					}
+				} else {
+					if ( a.start > b.start ) {
+						return -1;
+					} else if ( a.start < b.start ) {
+						return 1;
+					} else {
+						if ( a.end < b.end ) {
+							return -1;
+						} else if ( a.end > b.end ) {
+							return 1;
+						} else {
+							return 0;
+						}
+					}
+				}
 			}
 		} );
 		return events;
