@@ -18,22 +18,22 @@ var GAPS = {
 		var events = [];
 		var lineEvent = function ( o, s, e, i, t ) {
 			this.order = o;
-			this.start = s;
-			this.end = e;
+			this.start = Math.min( s, e );
+			this.end = Math.max( s, e );
 			this.id = i;
 			this.topside = t;
 		};
 		if ( direction === 'vertical' ) {
 			for ( var i = 0; i < boxes.length; i++ ) {
 				var b = boxes[ i ];
-				events.push( new lineEvent( b.y1, b.x1, b.x2, i, true ) );
-				events.push( new lineEvent( b.y2, b.x1, b.x2, i, false ) );
+				events.push( new lineEvent( Math.min( b.y1, b.y2 ), b.x1, b.x2, i, true ) );
+				events.push( new lineEvent( Math.max( b.y1, b.y2 ), b.x1, b.x2, i, false ) );
 			}
 		} else if ( direction === 'horizontal' ) {
 			for ( var i = 0; i < boxes.length; i++ ) {
 				var b = boxes[ i ];
-				events.push( new lineEvent( b.x1, b.y1, b.y2, i, true ) );
-				events.push( new lineEvent( b.x2, b.y1, b.y2, i, false ) );
+				events.push( new lineEvent( Math.min( b.x1, b.x2 ), b.y1, b.y2, i, true ) );
+				events.push( new lineEvent( Math.max( b.x1, b.x2 ), b.y1, b.y2, i, false ) );
 			}
 		}
 		events.sort( function ( a, b ) {

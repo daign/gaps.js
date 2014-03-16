@@ -63,10 +63,10 @@ var SVG = {
 
 	drawBox: function ( x1, x2, y1, y2, className ) {
 		var rect = document.createElementNS( SVG.NS, 'rect' );
-		rect.setAttribute( 'x', x1 );
-		rect.setAttribute( 'y', y1 );
-		rect.setAttribute( 'width', x2-x1 );
-		rect.setAttribute( 'height', y2-y1 );
+		rect.setAttribute( 'x', Math.min( x1, x2 ) );
+		rect.setAttribute( 'y', Math.min( y1, y2 ) );
+		rect.setAttribute( 'width', Math.abs(x2-x1) );
+		rect.setAttribute( 'height', Math.abs(y2-y1) );
 		rect.setAttribute( 'class', className );
 		SVG.context.appendChild( rect );
 	},
