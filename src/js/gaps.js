@@ -136,11 +136,22 @@ var GAPS = {
 			var e = events[ i ];
 			var overlaps = sweepstate.query( e );
 			for ( var j = 0; j < overlaps.length; j++ ) {
-				var o = overlaps[ j ];
-				if ( o.id !== e.id && o.offset < e.order ) {
-					var p1 = Math.max( o.start, e.start );
-					var p2 = Math.min( o.end, e.end );
-					ulines.push( { start: o.offset, end: e.order, pos: (p1+p2)/2 } );
+				var isLocalMaximum = function ( x, a ) {
+					if ( (x-1) >= 0 && a[ x-1 ].offset > a[ x ].offset ) {
+						return false;
+					} else if ( (x+1) < a.length && a[ x+1 ].offset > a[ x ].offset ) {
+						return false;
+					} else {
+						return true;
+					}
+				};
+				if ( isLocalMaximum( j, overlaps ) ) {
+					var o = overlaps[ j ];
+					if ( o.id !== e.id && o.offset < e.order ) {
+						var p1 = Math.max( o.start, e.start );
+						var p2 = Math.min( o.end, e.end );
+						ulines.push( { start: o.offset, end: e.order, pos: (p1+p2)/2 } );
+					}
 				}
 			}
 			sweepstate.insert( e );
