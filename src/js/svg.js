@@ -2,14 +2,14 @@ var SVG = {
 
 	NS: 'http://www.w3.org/2000/svg',
 
-	init: function ( w, h ) {
+	init: function ( w, h, m ) {
 		var self = this;
 		this.context = document.createElementNS( SVG.NS, 'svg' );
-		this.context.setAttribute( 'viewBox', '-2, -2,' + (w+4) + ',' + (h+4) );
+		this.context.setAttribute( 'viewBox', (-m) + ',' + (-m) + ',' + (w+2*m) + ',' + (h+2*m) );
 		document.body.appendChild( this.context );
 
-		this.drawBox( 0, w, 0, h, 'paper' );
 		this.createMarkers();
+		this.drawPaper( w, h );
 
 		function onWindowResize() {
 			self.resize();
@@ -61,26 +61,14 @@ var SVG = {
 		markerStart.appendChild( startPath );
 	},
 
-	drawBox: function ( x1, x2, y1, y2, className ) {
+	drawPaper: function ( w, h ) {
 		var rect = document.createElementNS( SVG.NS, 'rect' );
-		rect.setAttribute( 'x', Math.min( x1, x2 ) );
-		rect.setAttribute( 'y', Math.min( y1, y2 ) );
-		rect.setAttribute( 'width', Math.abs(x2-x1) );
-		rect.setAttribute( 'height', Math.abs(y2-y1) );
-		rect.setAttribute( 'class', className );
+		rect.setAttribute( 'x', 0 );
+		rect.setAttribute( 'y', 0 );
+		rect.setAttribute( 'width', w );
+		rect.setAttribute( 'height', h );
+		rect.setAttribute( 'class', 'paper' );
 		SVG.context.appendChild( rect );
-	},
-
-	drawLine: function ( x1, x2, y1, y2 ) {
-		var line = document.createElementNS( SVG.NS, 'line' );
-		line.setAttribute( 'x1', x1 );
-		line.setAttribute( 'y1', y1 );
-		line.setAttribute( 'x2', x2 );
-		line.setAttribute( 'y2', y2 );
-		line.setAttribute( 'class', 'line' );
-		line.setAttribute( 'marker-start', 'url(#arrowStart)' );
-		line.setAttribute( 'marker-end', 'url(#arrowEnd)' );
-		SVG.context.appendChild( line );
 	}
 
 };

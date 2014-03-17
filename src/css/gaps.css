@@ -15,6 +15,7 @@ body {
 	fill-opacity: 0.8;
 	stroke: #693;
 	stroke-width: 0.3px;
+	cursor: pointer;
 }
 .line {
 	fill: none;
