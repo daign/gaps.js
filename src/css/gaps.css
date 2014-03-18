@@ -1,0 +1,30 @@
+body {
+	font-family: sans-serif;
+	color: #000;
+	background-color: #ddc;
+	margin: 0px;
+	overflow: hidden;
+}
+.paper {
+	fill: #fff;
+	stroke: #000;
+	stroke-width: 0.2px;
+}
+.rect {
+	fill: #9c6;
+	fill-opacity: 0.8;
+	stroke: #693;
+	stroke-width: 0.3px;
+	cursor: pointer;
+}
+.line {
+	fill: none;
+	stroke: #047;
+	stroke-width: 0.3px;
+}
+.lineEnd {
+	fill: none;
+	stroke: #047;
+	stroke-width: 1.7px;
+}
+
