@@ -16,13 +16,19 @@ var main = function () {
 		this.rect.setAttribute( 'class', 'rect' );
 		SVG.context.appendChild( this.rect );
 
-		this.update = function () {
+		this.repaint = function () {
 			this.rect.setAttribute( 'x', this.x1 );
 			this.rect.setAttribute( 'y', this.y1 );
 			this.rect.setAttribute( 'width', this.x2-this.x1 );
 			this.rect.setAttribute( 'height', this.y2-this.y1 );
 		};
-		this.update();
+		this.repaint();
+
+		this.update = function () {
+			this.repaint();
+			this.guard.update();
+		};
+		this.throttledUpdate = UTIL.throttle( this.update, 20, this );
 
 		var self = this;
 		function beginDrag( event ) {
@@ -80,8 +86,7 @@ var main = function () {
 					self.y2 = startY2 + offsetY;
 				}
 
-				self.update();
-				self.guard.update();
+				self.throttledUpdate();
 
 			}
 
