@@ -105,8 +105,8 @@ var GAPS = {
 					this.map.push( o );
 				}
 			};
-			this.query = function ( e ) {
-				var range = this.overlap( e );
+			this.getOverlapElements = function ( e, inclusive ) {
+				var range = ( inclusive ) ? this.overlapInclusive( e ) : this.overlap( e );
 				if ( range ) {
 					return this.map.slice( range[ 0 ], range[ 1 ]+1 );
 				} else {
@@ -124,6 +124,17 @@ var GAPS = {
 					return null;
 				}
 			};
+			this.overlapInclusive = function ( e ) {
+				var i = 0;
+				while ( this.map[ i ] && this.map[ i ].end < e.start ) { i++; }
+				if ( this.map[ i ] ) {
+					var a = i;
+					while ( this.map[ i ] && this.map[ i ].start <= e.end ) { i++; }
+					return [ a, i-1 ];
+				} else {
+					return null;
+				}
+			};
 			this.print = function () {
 				console.log( 'divisionMap:' );
 				for ( var i = 0; i < this.map.length; i++ ) {
@@ -134,7 +145,7 @@ var GAPS = {
 		var sweepstate = new divisionMap();
 		for ( var i = 0; i < events.length; i++ ) {
 			var e = events[ i ];
-			var overlaps = sweepstate.query( e );
+			var overlaps = sweepstate.getOverlapElements( e, true );
 			for ( var j = 0; j < overlaps.length; j++ ) {
 				var isLocalMaximum = function ( x, a ) {
 					if ( (x-1) >= 0 && a[ x-1 ].offset > a[ x ].offset ) {

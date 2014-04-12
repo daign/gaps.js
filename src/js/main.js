@@ -27,6 +27,9 @@ var main = function () {
 		var self = this;
 		function beginDrag( event ) {
 
+			event.preventDefault();
+			event.stopPropagation();
+
 			var startX = event.clientX || ( event.touches && event.touches[ 0 ].clientX );
 			var startY = event.clientY || ( event.touches && event.touches[ 0 ].clientY );
 			var startX1 = self.x1;
@@ -34,8 +37,12 @@ var main = function () {
 			var startY1 = self.y1;
 			var startY2 = self.y2;
 
-			event.preventDefault();
-			event.stopPropagation();
+			var factor = 1;
+			if ( window.innerWidth * (h+2*m) > window.innerHeight * (w+2*m) ) {
+				factor = (h+2*m) / window.innerHeight;
+			} else {
+				factor = (w+2*m) / window.innerWidth;
+			}
 
 			document.addEventListener( 'selectstart', cancelSelect, false );
 
@@ -57,24 +64,22 @@ var main = function () {
 				event.preventDefault();
 				event.stopPropagation();
 
-				if ( window.innerWidth * (h+2*m) > window.innerHeight * (w+2*m) ) {
-					var f = (h+2*m) / window.innerHeight;
-				} else {
-					var f = (w+2*m) / window.innerWidth;
+				var cX = event.clientX || ( event.touches && event.touches[ 0 ].clientX );
+				var offsetX = ( cX - startX ) * factor;
+				if ( !isNaN( offsetX ) ) {
+					offsetX = Math.max( -startX1, Math.min( w-startX2, offsetX ) );
+					self.x1 = startX1 + offsetX;
+					self.x2 = startX2 + offsetX;
 				}
 
-				var cX = event.clientX || ( event.touches && event.touches[ 0 ].clientX );
-				var offsetX = ( cX - startX ) * f;
-				offsetX = Math.max( -startX1, Math.min( w-startX2, offsetX ) );
-
 				var cY = event.clientY || ( event.touches && event.touches[ 0 ].clientY );
-				var offsetY = ( cY - startY ) * f;
-				offsetY = Math.max( -startY1, Math.min( h-startY2, offsetY ) );
+				var offsetY = ( cY - startY ) * factor;
+				if ( !isNaN( offsetY ) ) {
+					offsetY = Math.max( -startY1, Math.min( h-startY2, offsetY ) );
+					self.y1 = startY1 + offsetY;
+					self.y2 = startY2 + offsetY;
+				}
 
-				self.x1 = startX1 + offsetX;
-				self.x2 = startX2 + offsetX;
-				self.y1 = startY1 + offsetY;
-				self.y2 = startY2 + offsetY;
 				self.update();
 				self.guard.update();
 

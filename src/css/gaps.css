@@ -21,6 +21,7 @@ body {
 	fill: none;
 	stroke: #047;
 	stroke-width: 0.3px;
+	pointer-events: none;
 }
 .lineEnd {
 	fill: none;
