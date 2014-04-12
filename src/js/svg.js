@@ -15,6 +15,7 @@ var SVG = {
 			self.resize();
 		}
 		window.addEventListener( 'resize', onWindowResize, false );
+		this.resize();
 	},
 
 	resize: function () {
